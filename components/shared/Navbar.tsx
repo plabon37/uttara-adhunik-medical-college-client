@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+
 import { useEffect, useState } from "react";
+
 import {
   ChevronDown,
-  ChevronRight,
   Menu,
   Search,
   X,
@@ -13,37 +14,109 @@ import {
 
 import {
   FaFacebookF,
-  FaYoutube,
-  FaLinkedinIn,
   FaInstagram,
+  FaLinkedinIn,
+  FaYoutube,
 } from "react-icons/fa";
 
+const aboutMenu = [
+  { title: "Overview", href: "/about/overview" },
+  { title: "History", href: "/about/history" },
+  { title: "Vision & Mission", href: "/about/vision-mission" },
+  { title: "Aim & Objective", href: "/about/aim-objective" },
+  {
+    title: "Organizational Structure",
+    href: "/about/organizational-structure",
+  },
+  {
+    title: "Founder Members",
+    href: "/about/founder-members",
+  },
+  {
+    title: "EC Members",
+    href: "/about/ec-members",
+  },
+  {
+    title: "GB Members",
+    href: "/about/gb-members",
+  },
+];
+
+const facilitiesMenu = [
+  {
+    title: "Hospital Service",
+    href: "/facilities/hospital-service",
+  },
+  {
+    title: "Departments",
+    href: "/facilities/departments",
+  },
+  {
+    title: "Library",
+    href: "/facilities/library",
+  },
+  {
+    title: "Medical Education Unit",
+    href: "/facilities/medical-education-unit",
+  },
+  {
+    title: "Training",
+    href: "/facilities/training",
+  },
+  {
+    title: "Publications",
+    href: "/facilities/publications",
+  },
+  {
+    title: "Seminar",
+    href: "/facilities/seminar",
+  },
+  {
+    title: "Hostel",
+    href: "/facilities/hostel",
+  },
+  {
+    title: "Laboratory",
+    href: "/facilities/laboratory",
+  },
+  {
+    title: "Cafeteria",
+    href: "/facilities/cafeteria",
+  },
+];
+
+const admissionMenu = [
+  {
+    title: "Admission Procedure",
+    href: "/admission/procedure",
+  },
+  {
+    title: "Admission Papers",
+    href: "/admission/papers",
+  },
+  {
+    title: "Application Form",
+    href: "/admission/application-form",
+  },
+  {
+    title: "Admission Result",
+    href: "/admission/result",
+  },
+  {
+    title: "Online Registration",
+    href: "/admission/online-registration",
+  },
+];
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [sticky, setSticky] = useState(false);
 
-  const [aboutOpen, setAboutOpen] =
+  const [mobileOpen, setMobileOpen] =
     useState(false);
-
-  const [facilityOpen, setFacilityOpen] =
-    useState(false);
-
-  const [admissionOpen, setAdmissionOpen] =
-    useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] =
-  useState(false);
-
-const [mobileAboutOpen, setMobileAboutOpen] =
-  useState(false);
-
-const [mobileFacilityOpen, setMobileFacilityOpen] =
-  useState(false);
-
-const [mobileAdmissionOpen, setMobileAdmissionOpen] =
-  useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setSticky(window.scrollY > 10);
     };
 
     handleScroll();
@@ -62,761 +135,577 @@ const [mobileAdmissionOpen, setMobileAdmissionOpen] =
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white shadow-lg"
-          : "bg-white"
+      className={`sticky top-0 z-[9999] w-full bg-white transition-all duration-300 ${
+        sticky
+          ? "shadow-xl"
+          : ""
       }`}
     >
-      <div className="mx-auto flex h-24 max-w-[1500px] items-center justify-between px-5 xl:px-10">
-
-        {/* ===================== */}
-        {/* Left */}
-        {/* ===================== */}
-
-        <div className="flex items-center">
-
-          {/* Logo */}
-
-          <Link
-            href="/"
-            className="flex items-center gap-4"
-          >
-            <Image
-              src="/logo.png"
-              alt="UAMC"
-              width={70}
-              height={70}
-              priority
-            />
-
-            <div>
-
-              <h2 className="text-[22px] font-bold leading-7 text-slate-900">
-                Uttara Adhunik
-              </h2>
-
-              <p className="text-[18px] text-slate-700">
-                Medical College (UAMC)
-              </p>
-
-            </div>
-
-          </Link>
-
-          {/* Divider */}
-
-          <div className="mx-8 h-10 w-px bg-slate-300" />
-
-          {/* Social */}
-
-          <div className="hidden items-center gap-6 xl:flex">
-
-            <Link
-              href="#"
-              className="transition hover:text-emerald-600"
-            >
-              <FaFacebookF size={18} />
-            </Link>
-
-            <Link
-              href="#"
-              className="transition hover:text-emerald-600"
-            >
-              <FaYoutube size={18} />
-            </Link>
-
-            <Link
-              href="#"
-              className="transition hover:text-emerald-600"
-            >
-              <FaLinkedinIn size={18} />
-            </Link>
-
-            <Link
-              href="#"
-              className="transition hover:text-emerald-600"
-            >
-              <FaInstagram size={18} />
-            </Link>
-
-          </div>
-
-        </div>
-                {/* ===================== */}
-        {/* Center Menu */}
-        {/* ===================== */}
-
-        <nav className="hidden xl:flex items-center">
-
-          {/* HOME */}
-
-          <Link
-            href="/"
-            className="
-              relative
-              px-5
-              py-10
-              text-[17px]
-              font-medium
-              text-emerald-600
-              after:absolute
-              after:bottom-6
-              after:left-5
-              after:h-[2px]
-              after:w-[55px]
-              after:bg-emerald-600
-            "
-          >
-            HOME
-          </Link>
-
-          {/* ABOUT */}
-
-          <div
-            className="relative"
-            onMouseEnter={() =>
-              setAboutOpen(true)
-            }
-            onMouseLeave={() =>
-              setAboutOpen(false)
-            }
-          >
-
-            <button
-              className="
-                flex
-                items-center
-                gap-2
-                px-5
-                py-10
-                text-[17px]
-                font-medium
-                text-slate-800
-                transition
-                hover:text-emerald-600
-              "
-            >
-              ABOUT UAMC
-
-              <ChevronDown
-                size={18}
-                className={`transition ${
-                  aboutOpen
-                    ? "rotate-180"
-                    : ""
-                }`}
-              />
-            </button>
-
-          </div>
-
-          {/* FACILITIES */}
-
-          <div
-            className="relative"
-            onMouseEnter={() =>
-              setFacilityOpen(true)
-            }
-            onMouseLeave={() =>
-              setFacilityOpen(false)
-            }
-          >
-
-            <button
-              className="
-                flex
-                items-center
-                gap-2
-                px-5
-                py-10
-                text-[17px]
-                font-medium
-                text-slate-800
-                transition
-                hover:text-emerald-600
-              "
-            >
-              FACILITIES
-
-              <ChevronDown
-                size={18}
-                className={`transition ${
-                  facilityOpen
-                    ? "rotate-180"
-                    : ""
-                }`}
-              />
-
-            </button>
-
-          </div>
-
-          {/* ADMISSION */}
-
-          <div
-            className="relative"
-            onMouseEnter={() =>
-              setAdmissionOpen(true)
-            }
-            onMouseLeave={() =>
-              setAdmissionOpen(false)
-            }
-          >
-
-            <button
-              className="
-                flex
-                items-center
-                gap-2
-                px-5
-                py-10
-                text-[17px]
-                font-medium
-                text-slate-800
-                transition
-                hover:text-emerald-600
-              "
-            >
-              ADMISSION
-
-              <ChevronDown
-                size={18}
-                className={`transition ${
-                  admissionOpen
-                    ? "rotate-180"
-                    : ""
-                }`}
-              />
-
-            </button>
-
-          </div>
-
-          {/* NOTICE */}
-
-          <Link
-            href="/notice"
-            className="
-              px-5
-              py-10
-              text-[17px]
-              font-medium
-              text-slate-800
-              transition
-              hover:text-emerald-600
-            "
-          >
-            NOTICE & MEDIA
-          </Link>
-
-          {/* CAREER */}
-
-          <Link
-            href="/career"
-            className="
-              px-5
-              py-10
-              text-[17px]
-              font-medium
-              text-slate-800
-              transition
-              hover:text-emerald-600
-            "
-          >
-            CAREER
-          </Link>
-
-        </nav>
-
-        {/* ===================== */}
-        {/* Right */}
-        {/* ===================== */}
-
-        <div className="flex items-center">
-
-          <div className="hidden xl:flex items-center">
-
-            <div className="mr-8 h-10 w-px bg-slate-300" />
-
-            <button
-              className="
-                transition
-                hover:text-emerald-600
-              "
-            >
-              <Search size={30} />
-            </button>
-
-          </div>
-
-<button
-  onClick={() => setMobileMenuOpen(true)}
-  className="ml-8 transition hover:text-emerald-600 xl:hidden"
->
-  <Menu size={34} />
-</button>
-        </div>
-
-      </div>
-                  {/* About Dropdown */}
-
-            {aboutOpen && (
-              <div
-                className="
-                  absolute
-                  left-0
-                  top-full
-                  z-50
-                  w-80
-                  overflow-hidden
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-white
-                  py-3
-                  shadow-2xl
-                "
-              >
-                <Link
-                  href="/about/overview"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Overview
-                </Link>
-
-                <Link
-                  href="/about/history"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  History
-                </Link>
-
-                <Link
-                  href="/about/vision-mission"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Vision & Mission
-                </Link>
-
-                <Link
-                  href="/about/aim-objective"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Aim & Objective
-                </Link>
-
-                <Link
-                  href="/about/organizational-structure"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Organizational Structure
-                </Link>
-
-                <Link
-                  href="/about/founder-members"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Founder Members
-                </Link>
-
-                <Link
-                  href="/about/ec-members"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  EC Members
-                </Link>
-
-                <Link
-                  href="/about/gb-members"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  GB Members
-                </Link>
-              </div>
-            )}
-                        {/* Facilities Dropdown */}
-
-            {facilityOpen && (
-              <div
-                className="
-                  absolute
-                  left-0
-                  top-full
-                  z-50
-                  w-80
-                  overflow-hidden
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-white
-                  py-3
-                  shadow-2xl
-                "
-              >
-                <Link
-                  href="/facilities/hospital-service"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Hospital Service
-                </Link>
-
-                <Link
-                  href="/facilities/departments"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Departments
-                </Link>
-
-                <Link
-                  href="/facilities/library"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Library
-                </Link>
-
-                <Link
-                  href="/facilities/medical-education-unit"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Medical Education Unit
-                </Link>
-
-                <Link
-                  href="/facilities/training"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Training
-                </Link>
-
-                <Link
-                  href="/facilities/publications"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Publications
-                </Link>
-
-                <Link
-                  href="/facilities/seminar"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Seminar
-                </Link>
-
-                <Link
-                  href="/facilities/hostel"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Hostel
-                </Link>
-
-                <Link
-                  href="/facilities/laboratory"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Laboratory
-                </Link>
-
-                <Link
-                  href="/facilities/cafeteria"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Cafeteria
-                </Link>
-              </div>
-            )}
-                        {/* Admission Dropdown */}
-
-            {admissionOpen && (
-              <div
-                className="
-                  absolute
-                  left-0
-                  top-full
-                  z-50
-                  w-80
-                  overflow-hidden
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-white
-                  py-3
-                  shadow-2xl
-                "
-              >
-                <Link
-                  href="/admission/procedure"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Admission Procedure
-                </Link>
-
-                <Link
-                  href="/admission/papers"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Admission Papers
-                </Link>
-
-                <Link
-                  href="/admission/application-form"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Application Form
-                </Link>
-
-                <Link
-                  href="/admission/result"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Admission Result
-                </Link>
-
-                <Link
-                  href="/admission/online-registration"
-                  className="block px-6 py-3 text-[16px] text-slate-700 transition hover:bg-emerald-600 hover:text-white"
-                >
-                  Online Registration
-                </Link>
-              </div>
-            )}
-            {/* Mobile Menu */}
-
-{mobileMenuOpen && (
-  <>
-    <div
-      onClick={() => setMobileMenuOpen(false)}
-      className="fixed inset-0 z-[90] bg-black/50 xl:hidden"
+      <div className="border-b border-slate-200">
+
+        <div className="mx-auto flex h-24 w-full max-w-[1920px] items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20">
+
+          {/* ========================= LEFT ========================= */}
+
+<div className="flex items-center gap-8">
+
+  {/* Logo */}
+
+  <Link
+    href="/"
+    scroll
+    className="flex items-center gap-4 shrink-0"
+  >
+    <Image
+      src="/logo.png"
+      alt="UAMC Logo"
+      width={72}
+      height={72}
+      priority
+      className="h-16 w-16 object-contain lg:h-[72px] lg:w-[72px]"
     />
 
-    <aside
+    <div className="hidden sm:block">
+
+      <h2 className="text-xl font-bold leading-6 text-slate-900">
+        Uttara Adhunik
+      </h2>
+
+      <p className="text-sm text-slate-600">
+        Medical College
+      </p>
+
+    </div>
+
+  </Link>
+
+  {/* Social */}
+
+  <div className="hidden 2xl:flex items-center gap-5">
+
+    <Link href="#" className="text-slate-600 hover:text-emerald-600 transition">
+      <FaFacebookF size={17} />
+    </Link>
+
+    <Link href="#" className="text-slate-600 hover:text-emerald-600 transition">
+      <FaYoutube size={18} />
+    </Link>
+
+    <Link href="#" className="text-slate-600 hover:text-emerald-600 transition">
+      <FaLinkedinIn size={17} />
+    </Link>
+
+    <Link href="#" className="text-slate-600 hover:text-emerald-600 transition">
+      <FaInstagram size={18} />
+    </Link>
+
+  </div>
+
+</div>
+
+{/* ========================= CENTER ========================= */}
+
+<nav className="hidden xl:flex items-center">
+
+  {/* HOME */}
+
+  <Link
+    href="/"
+    scroll
+    className="relative px-5 py-10 text-[16px] font-semibold text-emerald-600 after:absolute after:bottom-7 after:left-5 after:h-[2px] after:w-[40px] after:bg-emerald-600"
+  >
+    HOME
+  </Link>
+
+  {/* ABOUT */}
+
+  <div className="group relative">
+
+    <Link
+      href="/about"
+      className="flex items-center gap-1 px-5 py-10 text-[16px] font-semibold text-slate-800 hover:text-emerald-600 transition"
+    >
+      ABOUT UAMC
+
+      <ChevronDown
+        size={18}
+        className="transition duration-300 group-hover:rotate-180"
+      />
+    </Link>
+
+    {/* ABOUT DROPDOWN এখানেই থাকবে */}
+
+  </div>
+
+  {/* FACILITIES */}
+
+  <div className="group relative">
+
+    <Link
+      href="/facilities"
+      className="flex items-center gap-1 px-5 py-10 text-[16px] font-semibold text-slate-800 hover:text-emerald-600 transition"
+    >
+      FACILITIES
+
+      <ChevronDown
+        size={18}
+        className="transition duration-300 group-hover:rotate-180"
+      />
+    </Link>
+
+    {/* FACILITIES DROPDOWN এখানেই থাকবে */}
+
+  </div>
+
+  {/* ADMISSION */}
+
+  <div className="group relative">
+
+    <Link
+      href="/admission"
+      className="flex items-center gap-1 px-5 py-10 text-[16px] font-semibold text-slate-800 hover:text-emerald-600 transition"
+    >
+      ADMISSION
+
+      <ChevronDown
+        size={18}
+        className="transition duration-300 group-hover:rotate-180"
+      />
+    </Link>
+
+    {/* ADMISSION DROPDOWN এখানেই থাকবে */}
+
+  </div>
+
+  <Link
+    href="/notice"
+    className="px-5 py-10 text-[16px] font-semibold text-slate-800 hover:text-emerald-600 transition"
+  >
+    NOTICE & MEDIA
+  </Link>
+
+  <Link
+    href="/career"
+    className="px-5 py-10 text-[16px] font-semibold text-slate-800 hover:text-emerald-600 transition"
+  >
+    CAREER
+  </Link>
+
+</nav>
+
+{/* ========================= RIGHT ========================= */}
+
+<div className="flex items-center gap-5">
+
+  <button className="hidden xl:flex text-slate-700 hover:text-emerald-600 transition">
+    <Search size={24} />
+  </button>
+
+  <div className="hidden xl:block h-8 w-px bg-slate-300" />
+
+  <button
+    onClick={() => setMobileOpen(true)}
+    className="rounded-lg p-2 hover:bg-slate-100 transition"
+  >
+    <Menu size={30} />
+  </button>
+
+</div>
+<div
+  className="
+    invisible
+    absolute
+    left-0
+    top-full
+    z-[9999]
+    mt-0
+    w-[320px]
+    overflow-hidden
+    rounded-xl
+    border
+    border-slate-200
+    bg-white
+    opacity-0
+    shadow-xl
+    transition-all
+    duration-300
+    group-hover:visible
+    group-hover:opacity-100
+    group-hover:pointer-events-auto
+    pointer-events-none
+  "
+>
+
+  {aboutMenu.map((item) => (
+
+    <Link
+      key={item.href}
+      href={item.href}
       className="
-        fixed
-        right-0
-        top-0
-        z-[100]
-        flex
-        h-screen
-        w-[340px]
-        flex-col
-        bg-white
-        shadow-2xl
-        xl:hidden
+        block
+        border-b
+        border-slate-100
+        px-6
+        py-4
+        text-[15px]
+        font-medium
+        text-slate-700
+        transition-all
+        duration-300
+        hover:bg-emerald-600
+        hover:pl-8
+        hover:text-white
       "
     >
-      {/* Header */}
+      {item.title}
+    </Link>
 
-      <div className="flex items-center justify-between border-b p-6">
+  ))}
 
-        <h2 className="text-2xl font-bold">
-          Menu
-        </h2>
+</div>
+<div
+  className="
+    invisible
+    absolute
+    left-0
+    top-full
+    z-[9999]
+    mt-0
+    w-[320px]
+    overflow-hidden
+    rounded-xl
+    border
+    border-slate-200
+    bg-white
+    opacity-0
+    shadow-xl
+    transition-all
+    duration-300
+    group-hover:visible
+    group-hover:opacity-100
+    group-hover:pointer-events-auto
+    pointer-events-none
+  "
+>
 
-        <button
-          onClick={() =>
-            setMobileMenuOpen(false)
-          }
-        >
-          <X size={30} />
-        </button>
+  {facilitiesMenu.map((item) => (
 
-      </div>
+    <Link
+      key={item.href}
+      href={item.href}
+      className="
+        block
+        border-b
+        border-slate-100
+        px-6
+        py-4
+        text-[15px]
+        font-medium
+        text-slate-700
+        transition-all
+        duration-300
+        hover:bg-emerald-600
+        hover:pl-8
+        hover:text-white
+      "
+    >
+      {item.title}
+    </Link>
 
-      {/* Menu */}
+  ))}
 
-      <div className="flex-1 overflow-y-auto">
+</div>
+<div
+  className="
+    invisible
+    absolute
+    left-0
+    top-full
+    z-[9999]
+    mt-0
+    w-[320px]
+    overflow-hidden
+    rounded-xl
+    border
+    border-slate-200
+    bg-white
+    opacity-0
+    shadow-xl
+    transition-all
+    duration-300
+    group-hover:visible
+    group-hover:opacity-100
+    group-hover:pointer-events-auto
+    pointer-events-none
+  "
+>
 
-        <Link
-          href="/"
-          onClick={() =>
-            setMobileMenuOpen(false)
-          }
-          className="block border-b px-6 py-4 font-medium"
-        >
-          Home
-        </Link>
+  {admissionMenu.map((item) => (
 
-        {/* About */}
+    <Link
+      key={item.href}
+      href={item.href}
+      className="
+        block
+        border-b
+        border-slate-100
+        px-6
+        py-4
+        text-[15px]
+        font-medium
+        text-slate-700
+        transition-all
+        duration-300
+        hover:bg-emerald-600
+        hover:pl-8
+        hover:text-white
+      "
+    >
+      {item.title}
+    </Link>
 
-        <button
-          onClick={() =>
-            setMobileAboutOpen(
-              !mobileAboutOpen
-            )
-          }
-          className="flex w-full items-center justify-between border-b px-6 py-4 font-medium"
-        >
-          About
+  ))}
 
-          <ChevronRight
-            size={18}
-            className={`transition ${
-              mobileAboutOpen
-                ? "rotate-90"
-                : ""
-            }`}
-          />
-        </button>
+</div>
+{/* ========================= RIGHT SIDE ========================= */}
 
-        {mobileAboutOpen && (
-          <div className="bg-slate-50">
+<div className="flex items-center gap-4">
+
+  {/* Search */}
+
+  <button
+    className="
+      hidden
+      xl:flex
+      h-11
+      w-11
+      items-center
+      justify-center
+      rounded-full
+      border
+      border-slate-200
+      text-slate-700
+      transition-all
+      duration-300
+      hover:border-emerald-600
+      hover:bg-emerald-600
+      hover:text-white
+    "
+  >
+    <Search size={20} />
+  </button>
+
+  {/* Mobile Menu */}
+
+  <button
+    onClick={() => setMobileOpen(true)}
+    className="
+      flex
+      h-11
+      w-11
+      items-center
+      justify-center
+      rounded-full
+      border
+      border-slate-200
+      text-slate-700
+      transition-all
+      duration-300
+      hover:border-emerald-600
+      hover:bg-emerald-600
+      hover:text-white
+      xl:hidden
+    "
+  >
+    <Menu size={22} />
+  </button>
+
+</div>
+
+</div>
+</div>
+
+{/* ========================= MOBILE DRAWER ========================= */}
+
+<div
+  className={`
+    fixed
+    inset-0
+    z-[99999]
+    transition-all
+    duration-300
+    ${
+      mobileOpen
+        ? "visible bg-black/50 opacity-100"
+        : "invisible opacity-0"
+    }
+  `}
+>
+
+  {/* Overlay */}
+
+  <div
+    onClick={() => setMobileOpen(false)}
+    className="absolute inset-0"
+  />
+
+  {/* Drawer */}
+
+  <div
+    className={`
+      absolute
+      right-0
+      top-0
+      h-screen
+      w-[330px]
+      bg-white
+      shadow-2xl
+      transition-all
+      duration-300
+      ${
+        mobileOpen
+          ? "translate-x-0"
+          : "translate-x-full"
+      }
+    `}
+  >
+
+    {/* Header */}
+
+    <div className="flex items-center justify-between border-b px-6 py-5">
+
+      <h2 className="text-xl font-bold">
+        Menu
+      </h2>
+
+      <button
+        onClick={() => setMobileOpen(false)}
+        className="
+          rounded-full
+          p-2
+          hover:bg-slate-100
+        "
+      >
+        <X size={24} />
+      </button>
+
+    </div>
+
+    {/* Menu */}
+
+    <div className="overflow-y-auto pb-10">
+
+      <Link
+        href="/"
+        onClick={() => setMobileOpen(false)}
+        className="block border-b px-6 py-4 font-medium hover:bg-emerald-600 hover:text-white"
+      >
+        HOME
+      </Link>
+
+      {/* ABOUT */}
+
+      <details>
+
+        <summary className="cursor-pointer border-b px-6 py-4 font-medium">
+          ABOUT UAMC
+        </summary>
+
+        <div>
+
+          {aboutMenu.map((item) => (
 
             <Link
-              href="/about/overview"
-              className="block px-10 py-3"
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className="block px-10 py-3 text-sm hover:bg-emerald-600 hover:text-white"
             >
-              Overview
+              {item.title}
             </Link>
+
+          ))}
+
+        </div>
+
+      </details>
+
+      {/* FACILITIES */}
+
+      <details>
+
+        <summary className="cursor-pointer border-b px-6 py-4 font-medium">
+          FACILITIES
+        </summary>
+
+        <div>
+
+          {facilitiesMenu.map((item) => (
 
             <Link
-              href="/about/history"
-              className="block px-10 py-3"
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className="block px-10 py-3 text-sm hover:bg-emerald-600 hover:text-white"
             >
-              History
+              {item.title}
             </Link>
+
+          ))}
+
+        </div>
+
+      </details>
+
+      {/* ADMISSION */}
+
+      <details>
+
+        <summary className="cursor-pointer border-b px-6 py-4 font-medium">
+          ADMISSION
+        </summary>
+
+        <div>
+
+          {admissionMenu.map((item) => (
 
             <Link
-              href="/about/vision-mission"
-              className="block px-10 py-3"
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className="block px-10 py-3 text-sm hover:bg-emerald-600 hover:text-white"
             >
-              Vision & Mission
+              {item.title}
             </Link>
 
-            <Link
-              href="/about/aim-objective"
-              className="block px-10 py-3"
-            >
-              Aim & Objective
-            </Link>
+          ))}
 
-          </div>
-        )}
+        </div>
 
-        {/* Facilities */}
+      </details>
 
-        <button
-          onClick={() =>
-            setMobileFacilityOpen(
-              !mobileFacilityOpen
-            )
-          }
-          className="flex w-full items-center justify-between border-b px-6 py-4 font-medium"
-        >
-          Facilities
+      <Link
+        href="/notice"
+        onClick={() => setMobileOpen(false)}
+        className="block border-b px-6 py-4 font-medium hover:bg-emerald-600 hover:text-white"
+      >
+        NOTICE & MEDIA
+      </Link>
 
-          <ChevronRight
-            size={18}
-            className={`transition ${
-              mobileFacilityOpen
-                ? "rotate-90"
-                : ""
-            }`}
-          />
-        </button>
+      <Link
+        href="/career"
+        onClick={() => setMobileOpen(false)}
+        className="block border-b px-6 py-4 font-medium hover:bg-emerald-600 hover:text-white"
+      >
+        CAREER
+      </Link>
 
-        {mobileFacilityOpen && (
-          <div className="bg-slate-50">
+    </div>
 
-            <Link
-              href="/facilities/hospital-service"
-              className="block px-10 py-3"
-            >
-              Hospital Service
-            </Link>
+  </div>
 
-            <Link
-              href="/facilities/departments"
-              className="block px-10 py-3"
-            >
-              Departments
-            </Link>
+</div>
 
-            <Link
-              href="/facilities/library"
-              className="block px-10 py-3"
-            >
-              Library
-            </Link>
-
-            <Link
-              href="/facilities/hostel"
-              className="block px-10 py-3"
-            >
-              Hostel
-            </Link>
-
-          </div>
-        )}
-
-        {/* Admission */}
-
-        <button
-          onClick={() =>
-            setMobileAdmissionOpen(
-              !mobileAdmissionOpen
-            )
-          }
-          className="flex w-full items-center justify-between border-b px-6 py-4 font-medium"
-        >
-          Admission
-
-          <ChevronRight
-            size={18}
-            className={`transition ${
-              mobileAdmissionOpen
-                ? "rotate-90"
-                : ""
-            }`}
-          />
-        </button>
-
-        {mobileAdmissionOpen && (
-          <div className="bg-slate-50">
-
-            <Link
-              href="/admission/procedure"
-              className="block px-10 py-3"
-            >
-              Admission Procedure
-            </Link>
-
-            <Link
-              href="/admission/application-form"
-              className="block px-10 py-3"
-            >
-              Application Form
-            </Link>
-
-            <Link
-              href="/admission/result"
-              className="block px-10 py-3"
-            >
-              Admission Result
-            </Link>
-
-          </div>
-        )}
-
-        <Link
-          href="/notice"
-          className="block border-b px-6 py-4 font-medium"
-        >
-          Notice & Media
-        </Link>
-
-        <Link
-          href="/career"
-          className="block border-b px-6 py-4 font-medium"
-        >
-          Career
-        </Link>
-
-      </div>
-    </aside>
-    </>
-  )}
-
-    </header>
-
-  );
+</header>
+);
 }

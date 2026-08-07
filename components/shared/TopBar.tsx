@@ -1,129 +1,117 @@
 import Link from "next/link";
-import {
-  MapPin,
-  Mail,
-  Phone,
-} from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 export default function TopBar() {
   return (
-    <div className="hidden border-b border-slate-200 bg-white lg:block">
-      <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 xl:px-10">
+    <div className="border-b border-slate-200 bg-white">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
 
-        {/* Left */}
+        <div className="flex flex-col gap-4 py-4 lg:flex-row lg:items-center lg:justify-between">
 
-        <div className="flex items-center gap-10">
+          {/* ================= Left ================= */}
 
-          {/* Address */}
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8 xl:gap-10">
 
-          <div className="flex items-center gap-4">
+            {/* Address */}
 
-            <MapPin
-              size={28}
-              strokeWidth={1.8}
-              className="text-slate-500"
-            />
+            <div className="flex items-start gap-3">
 
-            <div className="leading-6">
+              <MapPin
+                size={24}
+                strokeWidth={1.8}
+                className="mt-1 shrink-0 text-slate-500"
+              />
 
-              <p className="text-[17px] font-medium text-slate-600">
-                House - 34, Road - 4,
-                Sector - 9,
-              </p>
+              <div className="leading-5">
 
-              <p className="text-[17px] text-slate-500">
-                Sonargaon Janapath,
-                Uttara Model Town
-              </p>
+                <p className="text-sm font-medium text-slate-700 xl:text-base">
+                  House - 34, Road - 4, Sector - 9,
+                </p>
+
+                <p className="text-sm text-slate-500 xl:text-base">
+                  Sonargaon Janapath, Uttara Model Town
+                </p>
+
+              </div>
 
             </div>
 
+            {/* Email */}
+
+            <Link
+              href="mailto:info@uamc.com"
+              className="flex items-center gap-3 text-slate-600 transition hover:text-emerald-600"
+            >
+              <Mail size={22} />
+
+              <span className="text-sm xl:text-base">
+                info@uamc.com
+              </span>
+            </Link>
+
+            {/* Phone */}
+
+            <Link
+              href="tel:+8801700220000"
+              className="flex items-center gap-3 text-slate-600 transition hover:text-emerald-600"
+            >
+              <Phone size={22} />
+
+              <span className="text-sm xl:text-base">
+                +880 1700-220000
+              </span>
+            </Link>
+
           </div>
 
-          {/* Email */}
+          {/* ================= Right ================= */}
 
-          <Link
-            href="mailto:info@uamc.com"
-            className="flex items-center gap-3 transition hover:text-emerald-600"
-          >
+          <div className="flex flex-wrap items-center justify-start gap-y-3 lg:justify-end">
 
-            <Mail
-              size={26}
-              strokeWidth={1.8}
-            />
+            <Link
+              href="#"
+              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
+            >
+              Student Portal
+            </Link>
 
-            <span className="text-[18px] text-slate-600">
-              info@uamc.com
-            </span>
+            <div className="hidden h-6 w-px bg-slate-300 md:block" />
 
-          </Link>
+            <Link
+              href="#"
+              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
+            >
+              Teachers Portal
+            </Link>
 
-          {/* Phone */}
+            <div className="hidden h-6 w-px bg-slate-300 md:block" />
 
-          <Link
-            href="tel:+8801700220000"
-            className="flex items-center gap-3 transition hover:text-emerald-600"
-          >
+            <Link
+              href="#"
+              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
+            >
+              Alumni
+            </Link>
 
-            <Phone
-              size={26}
-              strokeWidth={1.8}
-            />
+            <div className="hidden h-6 w-px bg-slate-300 md:block" />
 
-            <span className="text-[18px] text-slate-600">
-              +880 1700-220000
-            </span>
+            <Link
+              href="#"
+              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
+            >
+              Events
+            </Link>
 
-          </Link>
+            <div className="hidden h-6 w-px bg-slate-300 md:block" />
 
-        </div>
+            <Link
+              href="#"
+              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:pl-6 xl:text-base"
+            >
+              Contact Us
+            </Link>
 
-        {/* Right */}
-
-        <div className="flex items-center">
-
-          <Link
-            href="#"
-            className="px-8 text-[18px] font-medium text-slate-700 transition hover:text-emerald-600"
-          >
-            Student Portal
-          </Link>
-
-          <div className="h-8 w-px bg-slate-300" />
-
-          <Link
-            href="#"
-            className="px-8 text-[18px] font-medium text-slate-700 transition hover:text-emerald-600"
-          >
-            Teachers Portal
-          </Link>
-
-          <div className="h-8 w-px bg-slate-300" />
-
-          <Link
-            href="#"
-            className="px-8 text-[18px] font-medium text-slate-700 transition hover:text-emerald-600"
-          >
-            Alumni
-          </Link>
-
-          <div className="h-8 w-px bg-slate-300" />
-
-          <Link
-            href="#"
-            className="px-8 text-[18px] font-medium text-slate-700 transition hover:text-emerald-600"
-          >
-            Events
-          </Link>
-
-          <div className="h-8 w-px bg-slate-300" />
-
-          <Link
-            href="#"
-            className="pl-8 text-[18px] font-medium text-slate-700 transition hover:text-emerald-600"
-          >
-            Contact Us
-          </Link>
+          </div>
 
         </div>
 
