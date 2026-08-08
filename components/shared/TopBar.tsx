@@ -1,120 +1,308 @@
-import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+"use client";
 
-export default function TopBar() {
+import {
+  MapPin,
+  Mail,
+  Phone,
+  GraduationCap,
+  Users,
+  UserRound,
+  CalendarDays,
+  Contact,
+} from "lucide-react";
+
+const topLinks = [
+  {
+    label: "Student Portal",
+    icon: GraduationCap,
+  },
+  {
+    label: "Teachers Portal",
+    icon: Users,
+  },
+  {
+    label: "Alumni",
+    icon: UserRound,
+  },
+  {
+    label: "Events",
+    icon: CalendarDays,
+  },
+  {
+    label: "Contact Us",
+    icon: Contact,
+  },
+];
+
+export default function Topbar() {
   return (
-    <div className="border-b border-slate-200 bg-white">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
+    <div className="w-full border-b border-slate-200 bg-white">
+      {/* =====================================================
+          DESKTOP TOPBAR
+      ====================================================== */}
 
-        <div className="flex flex-col gap-4 py-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="hidden min-h-[70px] w-full items-center lg:flex">
+        {/* ===================================================
+            LEFT SIDE
+        ==================================================== */}
 
-          {/* ================= Left ================= */}
+        <div
+          className="
+            flex
+            min-w-0
+            flex-1
+            items-center
+            justify-start
+            gap-6
+            px-6
+            xl:gap-8
+            xl:px-8
+            2xl:gap-10
+            2xl:px-10
+          "
+        >
+          {/* ================= ADDRESS ================= */}
 
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8 xl:gap-10">
+          <div
+            className="
+              flex
+              shrink-0
+              items-center
+              gap-3
+            "
+          >
+            <MapPin
+              size={25}
+              strokeWidth={1.8}
+              className="shrink-0 text-slate-500"
+            />
 
-            {/* Address */}
+            <div
+              className="
+                text-sm
+                leading-5
+                text-slate-500
+                xl:text-[15px]
+              "
+            >
+              <p className="whitespace-nowrap">
+                House - 34, Road - 4, Sector - 9,
+              </p>
 
-            <div className="flex items-start gap-3">
-
-              <MapPin
-                size={24}
-                strokeWidth={1.8}
-                className="mt-1 shrink-0 text-slate-500"
-              />
-
-              <div className="leading-5">
-
-                <p className="text-sm font-medium text-slate-700 xl:text-base">
-                  House - 34, Road - 4, Sector - 9,
-                </p>
-
-                <p className="text-sm text-slate-500 xl:text-base">
-                  Sonargaon Janapath, Uttara Model Town
-                </p>
-
-              </div>
-
+              <p className="whitespace-nowrap">
+                Sonargaon Janapath, Uttara Model Town
+              </p>
             </div>
-
-            {/* Email */}
-
-            <Link
-              href="mailto:info@uamc.com"
-              className="flex items-center gap-3 text-slate-600 transition hover:text-emerald-600"
-            >
-              <Mail size={22} />
-
-              <span className="text-sm xl:text-base">
-                info@uamc.com
-              </span>
-            </Link>
-
-            {/* Phone */}
-
-            <Link
-              href="tel:+8801700220000"
-              className="flex items-center gap-3 text-slate-600 transition hover:text-emerald-600"
-            >
-              <Phone size={22} />
-
-              <span className="text-sm xl:text-base">
-                +880 1700-220000
-              </span>
-            </Link>
-
           </div>
 
-          {/* ================= Right ================= */}
+          {/* ================= EMAIL ================= */}
 
-          <div className="flex flex-wrap items-center justify-start gap-y-3 lg:justify-end">
+          <a
+            href="mailto:info@uamc.com"
+            className="
+              flex
+              shrink-0
+              items-center
+              gap-3
+              whitespace-nowrap
+              text-sm
+              text-slate-500
+              transition-colors
+              hover:text-[#008B45]
+              xl:text-[15px]
+            "
+          >
+            <Mail
+              size={24}
+              strokeWidth={1.8}
+              className="shrink-0"
+            />
 
-            <Link
-              href="#"
-              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
-            >
-              Student Portal
-            </Link>
+            <span>info@uamc.com</span>
+          </a>
 
-            <div className="hidden h-6 w-px bg-slate-300 md:block" />
+          {/* ================= PHONE ================= */}
 
-            <Link
-              href="#"
-              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
-            >
-              Teachers Portal
-            </Link>
+          <a
+            href="tel:+8801700220000"
+            className="
+              flex
+              shrink-0
+              items-center
+              gap-3
+              whitespace-nowrap
+              text-sm
+              text-slate-500
+              transition-colors
+              hover:text-[#008B45]
+              xl:text-[15px]
+            "
+          >
+            <Phone
+              size={24}
+              strokeWidth={1.8}
+              className="shrink-0"
+            />
 
-            <div className="hidden h-6 w-px bg-slate-300 md:block" />
-
-            <Link
-              href="#"
-              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
-            >
-              Alumni
-            </Link>
-
-            <div className="hidden h-6 w-px bg-slate-300 md:block" />
-
-            <Link
-              href="#"
-              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:px-6 xl:text-base"
-            >
-              Events
-            </Link>
-
-            <div className="hidden h-6 w-px bg-slate-300 md:block" />
-
-            <Link
-              href="#"
-              className="px-3 text-sm font-medium text-slate-700 transition hover:text-emerald-600 xl:pl-6 xl:text-base"
-            >
-              Contact Us
-            </Link>
-
-          </div>
-
+            <span>+880 1700-220000</span>
+          </a>
         </div>
 
+        {/* ===================================================
+            RIGHT SIDE — QUICK LINKS
+        ==================================================== */}
+
+        <nav
+          aria-label="Quick navigation"
+          className="
+            flex
+            shrink-0
+            items-center
+            pr-6
+            xl:pr-8
+            2xl:pr-10
+          "
+        >
+          {topLinks.map(
+            (link, index) => {
+              const Icon = link.icon;
+
+              return (
+                <div
+                  key={link.label}
+                  className="flex items-center"
+                >
+                  <a
+                    href="#"
+                    className="
+                      group
+                      flex
+                      items-center
+                      gap-2
+                      whitespace-nowrap
+                      px-3
+                      py-2
+                      text-sm
+                      font-medium
+                      text-slate-700
+                      transition-colors
+                      hover:text-[#008B45]
+                      xl:px-4
+                      xl:text-[15px]
+                    "
+                  >
+                    <Icon
+                      size={17}
+                      strokeWidth={1.8}
+                      className="
+                        shrink-0
+                        text-slate-500
+                        transition-colors
+                        group-hover:text-[#008B45]
+                      "
+                    />
+
+                    <span>{link.label}</span>
+                  </a>
+
+                  {/* Divider before Contact Us */}
+
+                  {index === 3 && (
+                    <span
+                      className="
+                        mx-1
+                        h-6
+                        w-px
+                        shrink-0
+                        bg-slate-400
+                        xl:mx-2
+                      "
+                    />
+                  )}
+                </div>
+              );
+            }
+          )}
+        </nav>
+      </div>
+
+      {/* =====================================================
+          MOBILE TOPBAR
+      ====================================================== */}
+
+      <div
+        className="
+          flex
+          min-h-[58px]
+          w-full
+          items-center
+          px-4
+          sm:px-6
+          lg:hidden
+        "
+      >
+        <div
+          className="
+            flex
+            w-full
+            items-center
+            justify-center
+            gap-5
+            overflow-x-auto
+            whitespace-nowrap
+            scrollbar-hide
+          "
+        >
+          {/* EMAIL */}
+
+          <a
+            href="mailto:info@uamc.com"
+            className="
+              flex
+              shrink-0
+              items-center
+              gap-2
+              text-xs
+              text-slate-500
+              transition-colors
+              hover:text-[#008B45]
+              sm:text-sm
+            "
+          >
+            <Mail
+              size={17}
+              strokeWidth={1.8}
+            />
+
+            <span>info@uamc.com</span>
+          </a>
+
+          {/* PHONE */}
+
+          <a
+            href="tel:+8801700220000"
+            className="
+              flex
+              shrink-0
+              items-center
+              gap-2
+              text-xs
+              text-slate-500
+              transition-colors
+              hover:text-[#008B45]
+              sm:text-sm
+            "
+          >
+            <Phone
+              size={17}
+              strokeWidth={1.8}
+            />
+
+            <span>
+              +880 1700-220000
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   );

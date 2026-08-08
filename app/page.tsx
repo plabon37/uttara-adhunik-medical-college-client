@@ -4,15 +4,56 @@ import Publication from "@/components/home/Publication";
 
 export default function HomePage() {
   return (
-    <main className="overflow-x-hidden">
+    <main className="w-full overflow-x-hidden">
+      {/* =========================
+          HERO
+      ========================= */}
+
       <Hero />
 
-      <section className="w-full">
-        <div className="mx-auto max-w-7xl px-5 py-16">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-            <Notice />
+      {/* =========================
+          NOTICE + PUBLICATION
+      ========================= */}
 
-            <Publication />
+      <section className="w-full bg-white">
+        <div
+          className="
+            mx-auto
+            w-full
+            max-w-[1500px]
+            px-5
+            py-12
+            sm:px-8
+            sm:py-16
+            lg:px-10
+            lg:py-20
+            xl:px-12
+            2xl:px-16
+          "
+        >
+          <div
+            className="
+              grid
+              w-full
+              grid-cols-1
+              gap-12
+              lg:grid-cols-2
+              lg:gap-10
+              xl:gap-12
+              2xl:gap-16
+            "
+          >
+            {/* NOTICE */}
+
+            <div className="min-w-0 w-full">
+              <Notice />
+            </div>
+
+            {/* PUBLICATION */}
+
+            <div className="min-w-0 w-full">
+              <Publication />
+            </div>
           </div>
         </div>
       </section>
