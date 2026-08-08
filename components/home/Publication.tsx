@@ -1,20 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { Clock3, ExternalLink } from "lucide-react";
-import { useMemo, useState } from "react";
+import {
+  Clock3,
+  Download,
+  ExternalLink,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-interface Notice {
+interface Publication {
   _id: string;
   title: string;
   slug: string;
-
-  category:
-    | "General Notice"
-    | "Admission Notice"
-    | "Reports"
-    | "Job Circular";
-
+  category: "Journal" | "Tenders";
   description: string;
   pdf: string;
   date: string;
@@ -24,40 +22,103 @@ interface Notice {
   createdAt: string;
 }
 
-interface NoticeBoardProps {
-  notices: Notice[];
-}
-
 const categories = [
-  "General Notice",
-  "Admission Notice",
-  "Reports",
-  "Job Circular",
+  "Journal",
+  "Tenders",
 ] as const;
 
 type Category = (typeof categories)[number];
 
-export default function NoticeBoard({
-  notices,
-}: NoticeBoardProps) {
+export default function Publication() {
+  const [publications, setPublications] =
+    useState<Publication[]>([]);
+
   const [activeCategory, setActiveCategory] =
-    useState<Category>("General Notice");
+    useState<Category>("Journal");
+
+  const [loading, setLoading] =
+    useState(true);
 
   // ==========================
-  // FILTER NOTICES
+  // FETCH PUBLICATIONS
   // ==========================
 
-  const filteredNotices = useMemo(() => {
-    return notices
+  useEffect(() => {
+    async function getPublications() {
+      try {
+        setLoading(true);
+
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ADMIN_URL}/api/publications`,
+          {
+            cache: "no-store",
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error(
+            "Failed to fetch publications."
+          );
+        }
+
+        const data = await res.json();
+
+        /*
+         * API may return:
+         * 1. direct array
+         * 2. { data: [...] }
+         */
+
+        const publicationData =
+          Array.isArray(data)
+            ? data
+            : Array.isArray(data.data)
+            ? data.data
+            : [];
+
+        const publishedPublications =
+          publicationData.filter(
+            (publication: Publication) =>
+              publication.isPublished
+          );
+
+        setPublications(
+          publishedPublications
+        );
+      } catch (error) {
+        console.error(
+          "PUBLICATION FETCH ERROR:",
+          error
+        );
+
+        setPublications([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getPublications();
+  }, []);
+
+  // ==========================
+  // FILTER PUBLICATIONS
+  // ==========================
+
+  const filteredPublications = useMemo(() => {
+    return [...publications]
       .filter(
-        (notice) =>
-          notice.category === activeCategory
+        (publication) =>
+          publication.category ===
+          activeCategory
       )
       .sort(
         (a, b) =>
           a.order - b.order
       );
-  }, [notices, activeCategory]);
+  }, [
+    publications,
+    activeCategory,
+  ]);
 
   // ==========================
   // FORMAT DATE
@@ -73,7 +134,6 @@ export default function NoticeBoard({
 
     let parsedDate: Date;
 
-    // YYYY-MM-DD
     if (
       /^\d{4}-\d{2}-\d{2}$/.test(date)
     ) {
@@ -88,10 +148,7 @@ export default function NoticeBoard({
         month - 1,
         day
       );
-    }
-
-    // MM/DD/YYYY
-    else if (
+    } else if (
       /^\d{2}\/\d{2}\/\d{4}$/.test(date)
     ) {
       const [
@@ -105,10 +162,7 @@ export default function NoticeBoard({
         month - 1,
         day
       );
-    }
-
-    // ISO / MongoDB Date
-    else {
+    } else {
       parsedDate = new Date(date);
     }
 
@@ -141,11 +195,63 @@ export default function NoticeBoard({
     };
   };
 
+  // ==========================
+  // LOADING
+  // ==========================
+
+  if (loading) {
+    return (
+      <div className="min-w-0 w-full">
+        <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <h2
+            className="
+              font-serif
+              text-4xl
+              font-bold
+              leading-none
+              text-[#008B45]
+              sm:text-5xl
+              lg:text-6xl
+            "
+          >
+            Publication
+          </h2>
+
+          <Link
+            href="/publications"
+            className="
+              inline-flex
+              w-fit
+              items-center
+              gap-1
+              border-b
+              border-[#008B45]
+              pb-1
+              text-sm
+              font-medium
+              text-[#008B45]
+              sm:text-base
+            "
+          >
+            View All
+            <ExternalLink size={16} />
+          </Link>
+        </div>
+
+        <div className="mt-10 w-full bg-[#EEF0F9]">
+          <div className="h-[70px] animate-pulse bg-[#EEF0F9]" />
+        </div>
+
+        <div className="mt-4 h-[145px] w-full animate-pulse bg-[#EEF0F9]" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-w-0 w-full">
-      {/* ==========================
+      {/* =========================
           HEADER
-      ========================== */}
+      ========================= */}
 
       <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <h2
@@ -159,11 +265,11 @@ export default function NoticeBoard({
             lg:text-6xl
           "
         >
-          Notice Board
+          Publication
         </h2>
 
         <Link
-          href="/notices"
+          href="/publications"
           className="
             inline-flex
             w-fit
@@ -187,9 +293,9 @@ export default function NoticeBoard({
         </Link>
       </div>
 
-      {/* ==========================
-          CATEGORY TABS
-      ========================== */}
+      {/* =========================
+          TABS
+      ========================= */}
 
       <div className="mt-10 w-full max-w-full overflow-x-auto sm:mt-12">
         <div className="flex min-w-max bg-[#EEF0F9]">
@@ -238,9 +344,9 @@ export default function NoticeBoard({
         </div>
       </div>
 
-      {/* ==========================
-          NOTICE LIST
-      ========================== */}
+      {/* =========================
+          PUBLICATION LIST
+      ========================= */}
 
       <div
         className="
@@ -255,7 +361,7 @@ export default function NoticeBoard({
           sm:pr-2
         "
       >
-        {filteredNotices.length ===
+        {filteredPublications.length ===
         0 ? (
           <div
             className="
@@ -271,29 +377,31 @@ export default function NoticeBoard({
           >
             <div>
               <h3 className="text-xl font-semibold text-slate-700">
-                No Notices Available
+                No Publications Available
               </h3>
 
               <p className="mt-2 text-sm text-slate-500">
-                There are no published
-                notices in this category.
+                There are no published{" "}
+                {activeCategory.toLowerCase()}{" "}
+                publications available.
               </p>
             </div>
           </div>
         ) : (
-          filteredNotices.map(
-            (notice) => {
+          filteredPublications.map(
+            (publication) => {
               const {
                 day,
                 monthYear,
               } = formatDate(
-                notice.date
+                publication.date
               );
 
               return (
-                <Link
-                  key={notice._id}
-                  href={`/notices/${notice.slug}`}
+                <div
+                  key={
+                    publication._id
+                  }
                   className="
                     group
                     flex
@@ -313,9 +421,7 @@ export default function NoticeBoard({
                     sm:px-6
                   "
                 >
-                  {/* ==========================
-                      DATE
-                  ========================== */}
+                  {/* DATE */}
 
                   <div className="flex w-[82px] shrink-0 flex-col items-center sm:w-[105px]">
                     <span className="text-3xl font-bold leading-none text-slate-700 sm:text-4xl">
@@ -327,18 +433,15 @@ export default function NoticeBoard({
                     </span>
                   </div>
 
-                  {/* ==========================
-                      DIVIDER
-                  ========================== */}
+                  {/* DIVIDER */}
 
                   <div className="h-16 w-px shrink-0 bg-slate-300/70" />
 
-                  {/* ==========================
-                      CONTENT
-                  ========================== */}
+                  {/* CONTENT */}
 
                   <div className="min-w-0 flex-1">
-                    <h3
+                    <Link
+                      href={`/publications/${publication.slug}`}
                       className="
                         line-clamp-2
                         break-words
@@ -347,13 +450,13 @@ export default function NoticeBoard({
                         leading-7
                         text-slate-700
                         transition
-                        group-hover:text-[#008B45]
+                        hover:text-[#008B45]
                         sm:text-lg
                         lg:text-xl
                       "
                     >
-                      {notice.title}
-                    </h3>
+                      {publication.title}
+                    </Link>
 
                     <div className="mt-3 flex items-center gap-2 text-sm text-slate-600">
                       <Clock3
@@ -362,11 +465,14 @@ export default function NoticeBoard({
                       />
 
                       <span className="shrink-0">
-                        {notice.time}
+                        {publication.time}
                       </span>
                     </div>
                   </div>
-                </Link>
+
+                  
+                  
+                </div>
               );
             }
           )
