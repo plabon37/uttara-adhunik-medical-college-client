@@ -1007,10 +1007,9 @@ function DesktopMenu({
           font-medium
           transition
           xl:text-[17px]
-          ${
-            isOpen
-              ? "text-[#008B45]"
-              : "text-slate-900 hover:text-[#008B45]"
+          ${isOpen
+            ? "text-[#008B45]"
+            : "text-slate-900 hover:text-[#008B45]"
           }
         `}
       >
