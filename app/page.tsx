@@ -3,6 +3,7 @@ import Notice from "@/components/home/Notice";
 import Publication from "@/components/home/Publication";
 import About from "@/components/home/About";
 import Statistics from "@/components/home/Statistics";
+import DepartmentSection from "@/components/home/DepartmentSection";
 
 export default function HomePage() {
   return (
@@ -61,6 +62,7 @@ export default function HomePage() {
       </section>
       <About/>
       <Statistics/>
+      <DepartmentSection/>
     </main>
   );
 }
