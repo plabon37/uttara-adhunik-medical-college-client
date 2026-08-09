@@ -2,6 +2,7 @@ import Hero from "@/components/home/Hore";
 import Notice from "@/components/home/Notice";
 import Publication from "@/components/home/Publication";
 import About from "@/components/home/About";
+import Statistics from "@/components/home/Statistics";
 
 export default function HomePage() {
   return (
@@ -59,6 +60,7 @@ export default function HomePage() {
         </div>
       </section>
       <About/>
+      <Statistics/>
     </main>
   );
 }
