@@ -6,6 +6,7 @@ import Statistics from "@/components/home/Statistics";
 import DepartmentSection from "@/components/home/DepartmentSection";
 import Admission from "@/components/home/Admission";
 import Facilities from "@/components/home/Facilities";
+import PrincipalMessage from "@/components/home/PrincipalMessage";
 
 export default function HomePage() {
   return (
@@ -67,6 +68,7 @@ export default function HomePage() {
       <DepartmentSection/>
       <Admission/>
       <Facilities/>
+      <PrincipalMessage/>
     </main>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+
 import {
   ArrowRight,
-  Loader2,
 } from "lucide-react";
+
 import {
   useEffect,
   useState,
@@ -59,18 +60,6 @@ interface FacilitiesData {
 }
 
 // =========================================================
-// API RESPONSE TYPE
-// =========================================================
-
-interface FacilitiesApiResponse {
-  success?: boolean;
-
-  message?: string;
-
-  data?: FacilitiesData;
-}
-
-// =========================================================
 // COMPONENT
 // =========================================================
 
@@ -98,7 +87,7 @@ export default function Facilities() {
   );
 
   // =======================================================
-  // LOADING STATE
+  // LOADING
   // =======================================================
 
   const [
@@ -111,188 +100,170 @@ export default function Facilities() {
   // =======================================================
 
   useEffect(() => {
-    let cancelled = false;
+    async function loadFacilities() {
+      try {
+        // =================================================
+        // ADMIN API
+        // =================================================
 
-    const loadFacilities =
-      async () => {
-        try {
-          // =================================================
-          // ADMIN URL
-          // =================================================
-
-          const adminUrl =
-            process.env
-              .NEXT_PUBLIC_ADMIN_URL;
-
-          if (!adminUrl) {
-            throw new Error(
-              "NEXT_PUBLIC_ADMIN_URL is not configured."
-            );
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ADMIN_URL}/api/facilities`,
+          {
+            cache: "no-store",
           }
+        );
 
-          // =================================================
-          // FETCH FACILITIES API
-          // =================================================
+        // =================================================
+        // API ERROR
+        // =================================================
 
-          const response =
-            await fetch(
-              `${adminUrl}/api/facilities`,
-              {
-                cache: "no-store",
-              }
-            );
+        if (!res.ok) {
+          throw new Error(
+            "Failed to fetch facilities."
+          );
+        }
 
-          // =================================================
-          // READ RESPONSE
-          // =================================================
+        // =================================================
+        // RESPONSE
+        // =================================================
 
-          const responseText =
-            await response.text();
+        const result =
+          await res.json();
 
-          let data:
-            | FacilitiesApiResponse
-            | null = null;
+        // =================================================
+        // DATA
+        // =================================================
 
-          // =================================================
-          // PARSE JSON
-          // =================================================
+        const facilitiesData:
+          | FacilitiesData
+          | null =
+          result.data || null;
 
-          try {
-            data =
-              JSON.parse(
-                responseText
-              );
-          } catch {
-            console.error(
-              "FACILITIES API RESPONSE:",
-              responseText
-            );
+        // =================================================
+        // NO DATA
+        // =================================================
 
-            throw new Error(
-              "Facilities API returned an invalid response."
-            );
-          }
-
-          // =================================================
-          // CANCELLED CHECK
-          // =================================================
-
-          if (cancelled) {
-            return;
-          }
-
-          // =================================================
-          // NOT FOUND
-          // =================================================
-
-          if (
-            response.status ===
-            404
-          ) {
-            setFacilities(
-              null
-            );
-
-            return;
-          }
-
-          // =================================================
-          // API ERROR
-          // =================================================
-
-          if (
-            !response.ok ||
-            !data?.success ||
-            !data.data
-          ) {
-            throw new Error(
-              data?.message ||
-                "Failed to fetch Facilities section."
-            );
-          }
-
-          // =================================================
-          // ACTIVE CHECK
-          // =================================================
-
-          if (
-            data.data.isActive
-          ) {
-            setFacilities(
-              data.data
-            );
-          } else {
-            setFacilities(
-              null
-            );
-          }
-        } catch (error) {
-          // =================================================
-          // ERROR
-          // =================================================
-
-          console.error(
-            "CLIENT FACILITIES ERROR:",
-            error
+        if (
+          !facilitiesData
+        ) {
+          setFacilities(
+            null
           );
 
-          if (!cancelled) {
-            setFacilities(
-              null
-            );
-          }
-        } finally {
-          if (!cancelled) {
-            setLoading(
-              false
-            );
-          }
+          return;
         }
-      };
 
-    // =====================================================
-    // START FETCH
-    // =====================================================
+        // =================================================
+        // INACTIVE SECTION
+        // =================================================
+
+        if (
+          !facilitiesData.isActive
+        ) {
+          setFacilities(
+            null
+          );
+
+          return;
+        }
+
+        // =================================================
+        // SAVE FACILITIES
+        // =================================================
+
+        setFacilities(
+          facilitiesData
+        );
+
+        // =================================================
+        // ACTIVE FACILITIES
+        // =================================================
+
+        const activeFacilities =
+          (
+            facilitiesData.facilities ||
+            []
+          )
+            .filter(
+              (
+                facility
+              ) =>
+                facility.isActive
+            )
+            .sort(
+              (
+                a,
+                b
+              ) =>
+                a.order -
+                b.order
+            );
+
+        // =================================================
+        // DEFAULT SELECTED FACILITY
+        // =================================================
+
+        if (
+          activeFacilities.length >
+          0
+        ) {
+          setSelectedFacilityId(
+            activeFacilities[0]._id
+          );
+        }
+      } catch (error) {
+        console.error(
+          "CLIENT FACILITIES ERROR:",
+          error
+        );
+
+        setFacilities(
+          null
+        );
+      } finally {
+        setLoading(
+          false
+        );
+      }
+    }
 
     loadFacilities();
-
-    // =====================================================
-    // CLEANUP
-    // =====================================================
-
-    return () => {
-      cancelled = true;
-    };
   }, []);
 
   // =======================================================
   // LOADING
   // =======================================================
 
-  if (loading) {
+  if (
+    loading
+  ) {
     return (
       <section
         className="
-          relative
-          min-h-[500px]
           w-full
-          overflow-hidden
           bg-[#F8F5F5]
         "
       >
         <div
           className="
+            mx-auto
             flex
-            min-h-[500px]
+            min-h-[400px]
+            w-full
+            max-w-[1920px]
             items-center
             justify-center
           "
         >
-          <Loader2
-            size={34}
+          <div
             className="
+              h-10
+              w-10
               animate-spin
-              text-[#008B45]
+              rounded-full
+              border-4
+              border-[#008B45]/20
+              border-t-[#008B45]
             "
           />
         </div>
@@ -301,10 +272,12 @@ export default function Facilities() {
   }
 
   // =======================================================
-  // NO FACILITIES
+  // NO DATA
   // =======================================================
 
-  if (!facilities) {
+  if (
+    !facilities
+  ) {
     return null;
   }
 
@@ -313,18 +286,27 @@ export default function Facilities() {
   // =======================================================
 
   const activeFacilities =
-    facilities.facilities
+    (
+      facilities.facilities ||
+      []
+    )
       .filter(
-        (facility) =>
+        (
+          facility
+        ) =>
           facility.isActive
       )
       .sort(
-        (a, b) =>
-          a.order - b.order
+        (
+          a,
+          b
+        ) =>
+          a.order -
+          b.order
       );
 
   // =======================================================
-  // NO ACTIVE FACILITY
+  // NO ACTIVE FACILITIES
   // =======================================================
 
   if (
@@ -336,14 +318,13 @@ export default function Facilities() {
 
   // =======================================================
   // SELECTED FACILITY
-  //
-  // We do NOT use useEffect + setState here.
-  // This avoids the cascading-render warning.
   // =======================================================
 
   const selectedFacility =
     activeFacilities.find(
-      (facility) =>
+      (
+        facility
+      ) =>
         facility._id ===
         selectedFacilityId
     ) ||
@@ -467,7 +448,7 @@ export default function Facilities() {
           "
         >
           {/* =================================================
-              LEFT FACILITIES LIST
+              LEFT — FACILITY LIST
           ================================================= */}
 
           <div
@@ -475,9 +456,7 @@ export default function Facilities() {
               flex
               flex-col
               gap-5
-              pr-0
-              lg:pr-0
-          "
+            "
           >
             {activeFacilities.map(
               (
@@ -535,7 +514,9 @@ export default function Facilities() {
                         }
                       `}
                     >
-                      {facility.name}
+                      {
+                        facility.name
+                      }
                     </span>
 
                     {/* ARROW */}
@@ -553,13 +534,15 @@ export default function Facilities() {
                           text-[#FFC400]
                           transition-all
                           duration-300
-                          group-hover:bg-[#DDF0E5]
                           group-hover:translate-x-1
+                          group-hover:bg-[#DDF0E5]
                         "
                       >
                         <ArrowRight
                           size={25}
-                          strokeWidth={1.5}
+                          strokeWidth={
+                            1.5
+                          }
                         />
                       </span>
                     )}
@@ -570,7 +553,7 @@ export default function Facilities() {
           </div>
 
           {/* =================================================
-              CENTER IMAGE
+              CENTER — IMAGE
           ================================================= */}
 
           <div
@@ -583,9 +566,9 @@ export default function Facilities() {
               sm:h-[500px]
               lg:mt-0
               lg:h-[580px]
-          "
+            "
           >
-            {facilities.image && (
+            {facilities.image ? (
               <img
                 src={
                   facilities.image
@@ -600,11 +583,26 @@ export default function Facilities() {
                   object-cover
                 "
               />
+            ) : (
+              <div
+                className="
+                  flex
+                  h-full
+                  w-full
+                  items-center
+                  justify-center
+                  bg-slate-100
+                  text-sm
+                  text-slate-400
+                "
+              >
+                Facilities image
+              </div>
             )}
           </div>
 
           {/* =================================================
-              RIGHT DETAILS
+              RIGHT — DETAILS
           ================================================= */}
 
           <div
@@ -624,9 +622,7 @@ export default function Facilities() {
               xl:px-12
             "
           >
-            {/* =================================================
-                FACILITY TITLE
-            ================================================= */}
+            {/* TITLE */}
 
             <h3
               className="
@@ -641,12 +637,12 @@ export default function Facilities() {
                 xl:text-[44px]
               "
             >
-              {selectedFacility.title}
+              {
+                selectedFacility.title
+              }
             </h3>
 
-            {/* =================================================
-                DESCRIPTION
-            ================================================= */}
+            {/* DESCRIPTION */}
 
             <p
               className="
@@ -658,105 +654,111 @@ export default function Facilities() {
                 sm:leading-8
               "
             >
-              {selectedFacility.description}
+              {
+                selectedFacility.description
+              }
             </p>
 
-            {/* =================================================
-                DETAILS LINK
-            ================================================= */}
+            {/* DETAILS LINK */}
 
-            {selectedFacility.detailsText && (
-              <Link
-                href={
-                  selectedFacility.detailsLink ||
-                  "#"
-                }
-                className="
-                  group
-                  mt-10
-                  inline-flex
-                  w-fit
-                  items-center
-                  gap-8
-                  border-b
-                  border-[#009FE3]
-                  pb-1
-                  text-sm
-                  font-medium
-                  text-[#009FE3]
-                  transition-all
-                  duration-300
-                  hover:text-[#007EBA]
-                "
-              >
-                <span>
-                  {
-                    selectedFacility.detailsText
+            {
+              selectedFacility.detailsText && (
+                <Link
+                  href={
+                    selectedFacility.detailsLink ||
+                    "#"
                   }
-                </span>
-
-                <ArrowRight
-                  size={17}
-                  strokeWidth={1.5}
                   className="
-                    transition-transform
+                    group
+                    mt-10
+                    inline-flex
+                    w-fit
+                    items-center
+                    gap-8
+                    border-b
+                    border-[#009FE3]
+                    pb-1
+                    text-sm
+                    font-medium
+                    text-[#009FE3]
+                    transition-all
                     duration-300
-                    group-hover:translate-x-1
+                    hover:text-[#007EBA]
                   "
-                />
-              </Link>
-            )}
+                >
+                  <span>
+                    {
+                      selectedFacility.detailsText
+                    }
+                  </span>
 
-            {/* =================================================
-                PROGRAM BUTTON
-            ================================================= */}
+                  <ArrowRight
+                    size={17}
+                    strokeWidth={
+                      1.5
+                    }
+                    className="
+                      transition-transform
+                      duration-300
+                      group-hover:translate-x-1
+                    "
+                  />
+                </Link>
+              )
+            }
 
-            {facilities.programButtonText && (
-              <Link
-                href={
-                  facilities.programButtonLink ||
-                  "#"
-                }
-                className="
-                  group
-                  mt-16
-                  inline-flex
-                  min-h-[64px]
-                  w-fit
-                  items-center
-                  justify-center
-                  gap-4
-                  bg-[#009447]
-                  px-8
-                  py-4
-                  text-base
-                  font-medium
-                  text-white
-                  transition-all
-                  duration-300
-                  hover:bg-[#007C3B]
-                  hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)]
-                  sm:min-w-[280px]
-                  sm:text-lg
-                "
-              >
-                <span>
-                  {
-                    facilities.programButtonText
+            {/* PROGRAM BUTTON */}
+
+            {
+              facilities.programButtonText && (
+                <Link
+                  href={
+                    facilities.programButtonLink ||
+                    "#"
                   }
-                </span>
-
-                <ArrowRight
-                  size={22}
-                  strokeWidth={1.7}
                   className="
-                    transition-transform
+                    group
+                    mt-16
+                    inline-flex
+                    min-h-[64px]
+                    w-fit
+                    items-center
+                    justify-center
+                    gap-4
+                    bg-[#009447]
+                    px-8
+                    py-4
+                    text-base
+                    font-medium
+                    text-white
+                    transition-all
                     duration-300
-                    group-hover:translate-x-1
+                    hover:bg-[#007C3B]
+                    hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)]
+                    sm:min-w-[280px]
+                    sm:text-lg
                   "
-                />
-              </Link>
-            )}
+                >
+                  <span>
+                    {
+                      facilities.programButtonText
+                    }
+                  </span>
+
+                  <ArrowRight
+                    size={22}
+                    strokeWidth={
+                      1.7
+                    }
+                    className="
+                      transition-transform
+                      duration-300
+                      group-hover:translate-x-1
+                    "
+                  />
+                </Link>
+              )
+            }
           </div>
         </div>
       </div>
