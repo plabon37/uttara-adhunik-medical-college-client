@@ -9,6 +9,8 @@ import Facilities from "@/components/home/Facilities";
 import PrincipalMessage from "@/components/home/PrincipalMessage";
 import CampusLife from "@/components/home/CampusLife";
 import AlumniEvent from "@/components/home/AlumniEvent";
+import News from "@/components/home/News";
+import StudentFeedback from "@/components/home/StudentFeedback";
 export default function HomePage() {
   return (
     <main className="w-full overflow-x-hidden">
@@ -72,6 +74,8 @@ export default function HomePage() {
       <PrincipalMessage/>
       <CampusLife/>
       <AlumniEvent/>
+      <News/>
+      <StudentFeedback/>
     </main>
   );
 }
