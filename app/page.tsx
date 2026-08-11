@@ -7,7 +7,8 @@ import DepartmentSection from "@/components/home/DepartmentSection";
 import Admission from "@/components/home/Admission";
 import Facilities from "@/components/home/Facilities";
 import PrincipalMessage from "@/components/home/PrincipalMessage";
-
+import CampusLife from "@/components/home/CampusLife";
+import AlumniEvent from "@/components/home/AlumniEvent";
 export default function HomePage() {
   return (
     <main className="w-full overflow-x-hidden">
@@ -69,6 +70,8 @@ export default function HomePage() {
       <Admission/>
       <Facilities/>
       <PrincipalMessage/>
+      <CampusLife/>
+      <AlumniEvent/>
     </main>
   );
 }
