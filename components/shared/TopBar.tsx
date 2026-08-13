@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   MapPin,
   Mail,
@@ -14,22 +15,27 @@ import {
 const topLinks = [
   {
     label: "Student Portal",
+    href: "#",
     icon: GraduationCap,
   },
   {
     label: "Teachers Portal",
+    href: "#",
     icon: Users,
   },
   {
     label: "Alumni",
+    href: "#",
     icon: UserRound,
   },
   {
     label: "Events",
+    href: "#",
     icon: CalendarDays,
   },
   {
     label: "Contact Us",
+    href: "/contact",
     icon: Contact,
   },
 ];
@@ -163,66 +169,64 @@ export default function Topbar() {
             2xl:pr-10
           "
         >
-          {topLinks.map(
-            (link, index) => {
-              const Icon = link.icon;
+          {topLinks.map((link, index) => {
+            const Icon = link.icon;
 
-              return (
-                <div
-                  key={link.label}
-                  className="flex items-center"
+            return (
+              <div
+                key={link.label}
+                className="flex items-center"
+              >
+                <Link
+                  href={link.href}
+                  className="
+                    group
+                    flex
+                    items-center
+                    gap-2
+                    whitespace-nowrap
+                    px-3
+                    py-2
+                    text-sm
+                    font-medium
+                    text-slate-700
+                    transition-colors
+                    hover:text-[#008B45]
+                    xl:px-4
+                    xl:text-[15px]
+                  "
                 >
-                  <a
-                    href="#"
+                  <Icon
+                    size={17}
+                    strokeWidth={1.8}
                     className="
-                      group
-                      flex
-                      items-center
-                      gap-2
-                      whitespace-nowrap
-                      px-3
-                      py-2
-                      text-sm
-                      font-medium
-                      text-slate-700
+                      shrink-0
+                      text-slate-500
                       transition-colors
-                      hover:text-[#008B45]
-                      xl:px-4
-                      xl:text-[15px]
+                      group-hover:text-[#008B45]
                     "
-                  >
-                    <Icon
-                      size={17}
-                      strokeWidth={1.8}
-                      className="
-                        shrink-0
-                        text-slate-500
-                        transition-colors
-                        group-hover:text-[#008B45]
-                      "
-                    />
+                  />
 
-                    <span>{link.label}</span>
-                  </a>
+                  <span>{link.label}</span>
+                </Link>
 
-                  {/* Divider before Contact Us */}
+                {/* Divider before Contact Us */}
 
-                  {index === 3 && (
-                    <span
-                      className="
-                        mx-1
-                        h-6
-                        w-px
-                        shrink-0
-                        bg-slate-400
-                        xl:mx-2
-                      "
-                    />
-                  )}
-                </div>
-              );
-            }
-          )}
+                {index === 3 && (
+                  <span
+                    className="
+                      mx-1
+                      h-6
+                      w-px
+                      shrink-0
+                      bg-slate-400
+                      xl:mx-2
+                    "
+                  />
+                )}
+              </div>
+            );
+          })}
         </nav>
       </div>
 
@@ -253,7 +257,7 @@ export default function Topbar() {
             scrollbar-hide
           "
         >
-          {/* EMAIL */}
+          {/* ================= EMAIL ================= */}
 
           <a
             href="mailto:info@uamc.com"
@@ -277,7 +281,7 @@ export default function Topbar() {
             <span>info@uamc.com</span>
           </a>
 
-          {/* PHONE */}
+          {/* ================= PHONE ================= */}
 
           <a
             href="tel:+8801700220000"
