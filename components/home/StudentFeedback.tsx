@@ -30,17 +30,21 @@ export interface StudentFeedback {
   updatedAt?: string;
 }
 
+interface StudentFeedbackApiResponse {
+  success?: boolean;
+
+  message?: string;
+
+  data?: StudentFeedback[];
+}
+
 // =========================================================
 // COMPONENT
 // =========================================================
 
 export default function StudentFeedback() {
-  const [
-    feedbackList,
-    setFeedbackList,
-  ] = useState<StudentFeedback[]>(
-    []
-  );
+  const [feedbackList, setFeedbackList] =
+    useState<StudentFeedback[]>([]);
 
   const [loading, setLoading] =
     useState(true);
@@ -54,9 +58,12 @@ export default function StudentFeedback() {
 
     async function loadStudentFeedback() {
       try {
+        // =================================================
+        // ADMIN URL
+        // =================================================
+
         const adminUrl =
-          process.env
-            .NEXT_PUBLIC_ADMIN_URL;
+          process.env.NEXT_PUBLIC_ADMIN_URL;
 
         if (!adminUrl) {
           throw new Error(
@@ -64,70 +71,115 @@ export default function StudentFeedback() {
           );
         }
 
+        // =================================================
+        // CLEAN BASE URL
+        // =================================================
+
         const baseUrl =
-          adminUrl.replace(
-            /\/+$/,
-            ""
-          );
+          adminUrl.replace(/\/+$/, "");
+
+        const apiUrl =
+          `${baseUrl}/api/student-feedback`;
+
+        console.log(
+          "STUDENT FEEDBACK API URL:",
+          apiUrl
+        );
 
         // =================================================
-        // ADMIN API
+        // FETCH
         // =================================================
 
         const response =
-          await fetch(
-            `${baseUrl}/api/student-feedback`,
-            {
-              method: "GET",
+          await fetch(apiUrl, {
+            method: "GET",
 
-              cache: "no-store",
+            cache: "no-store",
 
-              headers: {
-                Accept:
-                  "application/json",
-              },
-            }
-          );
+            headers: {
+              Accept:
+                "application/json",
+            },
+          });
 
         // =================================================
-        // RESPONSE ERROR
+        // RESPONSE STATUS
+        // =================================================
+
+        console.log(
+          "STUDENT FEEDBACK STATUS:",
+          response.status
+        );
+
+        // =================================================
+        // READ RESPONSE
+        // =================================================
+
+        const responseText =
+          await response.text();
+
+        console.log(
+          "STUDENT FEEDBACK RAW RESPONSE:",
+          responseText
+        );
+
+        // =================================================
+        // CHECK HTTP ERROR
         // =================================================
 
         if (!response.ok) {
-          const responseText =
-            await response.text();
-
-          console.error(
-            "STUDENT FEEDBACK API ERROR:",
-            responseText
-          );
-
           throw new Error(
-            "Failed to fetch student feedback."
+            `Student Feedback API returned ${response.status}.`
           );
         }
 
         // =================================================
-        // JSON
+        // PARSE JSON
         // =================================================
 
-        const result =
-          await response.json();
+        let result:
+          StudentFeedbackApiResponse;
+
+        try {
+          result =
+            JSON.parse(
+              responseText
+            );
+        } catch {
+          throw new Error(
+            "Student Feedback API returned invalid JSON."
+          );
+        }
+
+        console.log(
+          "STUDENT FEEDBACK API RESPONSE:",
+          result
+        );
+
+        // =================================================
+        // API SUCCESS CHECK
+        // =================================================
+
+        if (!result.success) {
+          throw new Error(
+            result.message ||
+              "Student Feedback API failed."
+          );
+        }
 
         // =================================================
         // DATA
         // =================================================
 
-        const feedbackData:
-          StudentFeedback[] =
+        const feedbackData =
           Array.isArray(
-            result?.data
+            result.data
           )
             ? result.data
             : [];
 
         // =================================================
-        // PUBLISHED + SORT
+        // PUBLISHED FEEDBACK ONLY
         // =================================================
 
         const publishedFeedback =
@@ -139,8 +191,12 @@ export default function StudentFeedback() {
             )
             .sort(
               (a, b) =>
-                Number(a.order ?? 0) -
-                Number(b.order ?? 0)
+                Number(
+                  a.order ?? 0
+                ) -
+                Number(
+                  b.order ?? 0
+                )
             );
 
         // =================================================
@@ -181,8 +237,25 @@ export default function StudentFeedback() {
 
   if (loading) {
     return (
-      <section className="flex min-h-[500px] items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-[#008B45]" />
+      <section
+        className="
+          flex
+          min-h-[500px]
+          items-center
+          justify-center
+        "
+      >
+        <div
+          className="
+            h-10
+            w-10
+            animate-spin
+            rounded-full
+            border-4
+            border-slate-200
+            border-t-[#008B45]
+          "
+        />
       </section>
     );
   }

@@ -17,6 +17,7 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 /* =========================================================
    TYPES
@@ -141,10 +142,46 @@ const admissionMenu: MenuItem[] = [
 ];
 
 /* =========================================================
+   SEARCHABLE SECTIONS
+========================================================= */
+
+const searchItems: MenuItem[] = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "About UAMC",
+    href: "/about/overview",
+  },
+  ...aboutMenu,
+  {
+    label: "Facilities",
+    href: "/facilities/hospital-service",
+  },
+  ...facilitiesMenu,
+  {
+    label: "Admission",
+    href: "/admission/procedure-fees",
+  },
+  ...admissionMenu,
+  {
+    label: "Notice & Media",
+    href: "/notice-media",
+  },
+  {
+    label: "Career",
+    href: "/career",
+  },
+];
+
+/* =========================================================
    NAVBAR
 ========================================================= */
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   const [openMenu, setOpenMenu] =
     useState<string | null>(null);
 
@@ -156,6 +193,9 @@ export default function Navbar() {
 
   const [searchOpen, setSearchOpen] =
     useState(false);
+
+  const [searchQuery, setSearchQuery] =
+    useState("");
 
   /* =======================================================
      ESCAPE
@@ -169,6 +209,7 @@ export default function Navbar() {
         setOpenMenu(null);
         setMobileDropdown(null);
         setSearchOpen(false);
+        setSearchQuery("");
         setMobileOpen(false);
       }
     };
@@ -195,6 +236,7 @@ export default function Navbar() {
     setMobileDropdown(null);
     setMobileOpen(false);
     setSearchOpen(false);
+    setSearchQuery("");
   };
 
   /* =======================================================
@@ -220,6 +262,39 @@ export default function Navbar() {
       prev === menu ? null : menu
     );
   };
+
+  const isHomeActive =
+    pathname === "/";
+
+  const isAboutActive =
+    pathname === "/about" ||
+    pathname.startsWith("/about/");
+
+  const isFacilitiesActive =
+    pathname.startsWith("/facilities");
+
+  const isAdmissionActive =
+    pathname.startsWith("/admission");
+
+  const isNoticeActive =
+    pathname === "/notice-media" ||
+    pathname.startsWith("/notice-media/");
+
+  const isCareerActive =
+    pathname === "/career" ||
+    pathname.startsWith("/career/");
+
+  const normalizedSearch =
+    searchQuery.trim().toLowerCase();
+
+  const filteredSearchItems =
+    normalizedSearch.length === 0
+      ? []
+      : searchItems.filter((item) =>
+          item.label
+            .toLowerCase()
+            .includes(normalizedSearch)
+        );
 
   return (
     <>
@@ -418,7 +493,7 @@ export default function Navbar() {
             <Link
               href="/"
               onClick={closeAll}
-              className="
+              className={`
                 relative
                 flex
                 h-[86px]
@@ -427,24 +502,29 @@ export default function Navbar() {
                 font-serif
                 text-[16px]
                 font-medium
-                text-slate-900
                 transition
-                hover:text-[#008B45]
                 xl:text-[17px]
-              "
+                ${
+                  isHomeActive
+                    ? "text-[#008B45]"
+                    : "text-slate-900 hover:text-[#008B45]"
+                }
+              `}
             >
               HOME
 
-              <span
-                className="
-                  absolute
-                  bottom-0
-                  left-0
-                  right-0
-                  h-[2px]
-                  bg-[#008B45]
-                "
-              />
+              {isHomeActive && (
+                <span
+                  className="
+                    absolute
+                    bottom-0
+                    left-0
+                    right-0
+                    h-[2px]
+                    bg-[#008B45]
+                  "
+                />
+              )}
             </Link>
 
             {/* ABOUT */}
@@ -458,6 +538,7 @@ export default function Navbar() {
                 toggleDesktopMenu
               }
               setOpenMenu={setOpenMenu}
+              isActive={isAboutActive}
             />
 
             {/* FACILITIES */}
@@ -471,6 +552,7 @@ export default function Navbar() {
                 toggleDesktopMenu
               }
               setOpenMenu={setOpenMenu}
+              isActive={isFacilitiesActive}
             />
 
             {/* ADMISSION */}
@@ -484,6 +566,7 @@ export default function Navbar() {
                 toggleDesktopMenu
               }
               setOpenMenu={setOpenMenu}
+              isActive={isAdmissionActive}
             />
 
             {/* NOTICE */}
@@ -491,7 +574,8 @@ export default function Navbar() {
             <Link
               href="/notice-media"
               onClick={closeAll}
-              className="
+              className={`
+                relative
                 flex
                 h-[86px]
                 items-center
@@ -499,13 +583,29 @@ export default function Navbar() {
                 font-serif
                 text-[16px]
                 font-medium
-                text-slate-900
                 transition
-                hover:text-[#008B45]
                 xl:text-[17px]
-              "
+                ${
+                  isNoticeActive
+                    ? "text-[#008B45]"
+                    : "text-slate-900 hover:text-[#008B45]"
+                }
+              `}
             >
               NOTICE & MEDIA
+
+              {isNoticeActive && (
+                <span
+                  className="
+                    absolute
+                    bottom-0
+                    left-0
+                    right-0
+                    h-[2px]
+                    bg-[#008B45]
+                  "
+                />
+              )}
             </Link>
 
             {/* CAREER */}
@@ -513,7 +613,8 @@ export default function Navbar() {
             <Link
               href="/career"
               onClick={closeAll}
-              className="
+              className={`
+                relative
                 flex
                 h-[86px]
                 items-center
@@ -521,13 +622,29 @@ export default function Navbar() {
                 font-serif
                 text-[16px]
                 font-medium
-                text-slate-900
                 transition
-                hover:text-[#008B45]
                 xl:text-[17px]
-              "
+                ${
+                  isCareerActive
+                    ? "text-[#008B45]"
+                    : "text-slate-900 hover:text-[#008B45]"
+                }
+              `}
             >
               CAREER
+
+              {isCareerActive && (
+                <span
+                  className="
+                    absolute
+                    bottom-0
+                    left-0
+                    right-0
+                    h-[2px]
+                    bg-[#008B45]
+                  "
+                />
+              )}
             </Link>
           </nav>
 
@@ -692,7 +809,11 @@ export default function Navbar() {
 
                 <input
                   type="text"
-                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(event) =>
+                    setSearchQuery(event.target.value)
+                  }
+                  placeholder="Search sections..."
                   autoFocus
                   className="
                     w-full
@@ -704,6 +825,73 @@ export default function Navbar() {
                   "
                 />
               </div>
+
+              {normalizedSearch.length > 0 && (
+                <div
+                  className="
+                    mt-3
+                    overflow-hidden
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    bg-white
+                    shadow-[0_15px_40px_rgba(0,0,0,0.12)]
+                  "
+                >
+                  {filteredSearchItems.length > 0 ? (
+                    filteredSearchItems.map((item) => (
+                      <Link
+                        key={`${item.href}-${item.label}`}
+                        href={item.href}
+                        onClick={closeAll}
+                        className="
+                          group
+                          flex
+                          min-h-[54px]
+                          items-center
+                          justify-between
+                          gap-4
+                          border-b
+                          border-slate-100
+                          px-5
+                          text-sm
+                          font-medium
+                          text-slate-700
+                          transition
+                          last:border-b-0
+                          hover:bg-slate-50
+                          hover:text-[#F4C542]
+                        "
+                      >
+                        <span>{item.label}</span>
+
+                        <ArrowRight
+                          size={18}
+                          className="
+                            shrink-0
+                            text-slate-400
+                            transition-all
+                            group-hover:translate-x-1
+                            group-hover:text-[#F4C542]
+                          "
+                        />
+                      </Link>
+                    ))
+                  ) : (
+                    <div
+                      className="
+                        px-5
+                        py-6
+                        text-center
+                        text-sm
+                        text-slate-500
+                      "
+                    >
+                      No section found.
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -969,6 +1157,7 @@ function DesktopMenu({
   openMenu,
   toggleMenu,
   setOpenMenu,
+  isActive,
 }: {
   label: string;
   menuKey: string;
@@ -978,6 +1167,7 @@ function DesktopMenu({
   setOpenMenu: (
     value: string | null
   ) => void;
+  isActive: boolean;
 }) {
   const isOpen = openMenu === menuKey;
 
@@ -997,6 +1187,7 @@ function DesktopMenu({
           toggleMenu(menuKey)
         }
         className={`
+          relative
           flex
           h-[86px]
           items-center
@@ -1007,9 +1198,10 @@ function DesktopMenu({
           font-medium
           transition
           xl:text-[17px]
-          ${isOpen
-            ? "text-[#008B45]"
-            : "text-slate-900 hover:text-[#008B45]"
+          ${
+            isActive || isOpen
+              ? "text-[#008B45]"
+              : "text-slate-900 hover:text-[#008B45]"
           }
         `}
       >
@@ -1019,6 +1211,19 @@ function DesktopMenu({
           <ChevronUp size={20} />
         ) : (
           <ChevronDown size={20} />
+        )}
+
+        {isActive && (
+          <span
+            className="
+              absolute
+              bottom-0
+              left-0
+              right-0
+              h-[2px]
+              bg-[#008B45]
+            "
+          />
         )}
       </button>
 
@@ -1075,6 +1280,7 @@ function DesktopDropdown({
             text-white
             transition
             hover:bg-white/10
+            hover:text-[#F4C542]
             sm:text-lg
           "
         >
