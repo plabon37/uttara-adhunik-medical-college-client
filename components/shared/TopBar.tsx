@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import {
   MapPin,
   Mail,
@@ -231,7 +232,7 @@ export default function Topbar() {
       </div>
 
       {/* =====================================================
-          MOBILE TOPBAR
+          TABLET + MOBILE TOPBAR
       ====================================================== */}
 
       <div
@@ -251,10 +252,11 @@ export default function Topbar() {
             w-full
             items-center
             justify-center
-            gap-5
+            gap-4
             overflow-x-auto
             whitespace-nowrap
             scrollbar-hide
+            sm:gap-5
           "
         >
           {/* ================= EMAIL ================= */}
@@ -306,6 +308,38 @@ export default function Topbar() {
               +880 1700-220000
             </span>
           </a>
+
+          {/* ================= CONTACT US ================= */}
+
+          <Link
+            href="/contact"
+            className="
+              group
+              flex
+              shrink-0
+              items-center
+              gap-2
+              text-xs
+              font-medium
+              text-slate-700
+              transition-colors
+              hover:text-[#008B45]
+              sm:text-sm
+            "
+          >
+            <Contact
+              size={17}
+              strokeWidth={1.8}
+              className="
+                shrink-0
+                text-slate-500
+                transition-colors
+                group-hover:text-[#008B45]
+              "
+            />
+
+            <span>Contact Us</span>
+          </Link>
         </div>
       </div>
     </div>
