@@ -11,11 +11,11 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   {
     label: "Admission Procedure & Fees",
-    href: "/admission/admission-procedure-fees",
+    href: "/admission/procedure-fees",
   },
   {
     label: "Admission Papers",
-    href: "/admission/admission-papers",
+    href: "/admission/papers",
   },
   {
     label: "Application Form",
@@ -23,7 +23,7 @@ const navigationItems: NavigationItem[] = [
   },
   {
     label: "Admission Results",
-    href: "/admission/admission-results",
+    href: "/admission/results",
   },
   {
     label: "Online Registration",
