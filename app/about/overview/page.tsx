@@ -1,6 +1,7 @@
 
 
 import About from "@/components/home/About";
+import Visite from "@/components/about/overview/Visite";
 import Statistics from "@/components/home/Statistics";
 import Admission from "@/components/home/Admission";
 import PrincipalMessage from "@/components/home/PrincipalMessage";
@@ -32,6 +33,7 @@ export default function HomePage() {
       {/* About page content */}
         <AboutNavigation/>
       <About/>
+      <Visite/>
       <Statistics/>
       <PrincipalMessage/>
       <Admission/>
