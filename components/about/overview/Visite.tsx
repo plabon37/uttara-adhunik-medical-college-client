@@ -267,7 +267,7 @@ export default function Visite() {
                   sm:text-sm
                 "
               >
-                About UAMC
+                Visite UAMC
               </span>
             </div>
 
