@@ -280,8 +280,8 @@ export default function About() {
               <div
                 className="
                   absolute
-                  left-[40%]
-                  top-[48%]
+                  left-[60%]
+                  top-[34%]
                   z-20
                   flex
                   h-[125px]
@@ -290,7 +290,7 @@ export default function About() {
                   -translate-y-1/2
                   items-center
                   justify-center
-                  bg-white
+              
                   p-3
                   shadow-[0_8px_30px_rgba(0,0,0,0.18)]
                   sm:h-[150px]
