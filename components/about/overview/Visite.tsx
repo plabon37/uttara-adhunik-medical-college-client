@@ -136,8 +136,8 @@ export default function Visite() {
               size={20}
               className="animate-spin text-[#008B45]"
             />
-
-            Loading...
+                <h1>Hiii</h1>
+            Loading Visite section...
           </div>
         </div>
       </section>

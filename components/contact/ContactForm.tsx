@@ -298,7 +298,7 @@ export default function ContactForm() {
               "
             >
               Keep In Touch, We Want To Hear
-              From You - Send Us Message
+              From You - Send Us Message or mail
             </h1>
           </div>
 
