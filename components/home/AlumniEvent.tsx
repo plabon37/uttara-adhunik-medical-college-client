@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import Image from "next/image";
 import {
   CalendarDays,
   Clock3,
   MapPin,
 } from "lucide-react";
-
-import Image from "next/image";
 
 // =========================================================
 // TYPES
@@ -16,33 +14,21 @@ import Image from "next/image";
 
 interface AlumniEvent {
   _id: string;
-
   title: string;
-
   date: string;
-
   time: string;
-
   location: string;
-
   image: string;
-
   isPublished: boolean;
-
   order: number;
-
   createdAt?: string;
-
   updatedAt?: string;
 }
 
 interface AlumniEventApiResponse {
   success?: boolean;
-
   message?: string;
-
   data?: AlumniEvent | AlumniEvent[];
-
   alumniEvents?: AlumniEvent | AlumniEvent[];
 }
 
@@ -51,22 +37,16 @@ interface AlumniEventApiResponse {
 // =========================================================
 
 export default function AlumniEvent() {
-  // =======================================================
-  // STATE
-  // =======================================================
-
-  const [events, setEvents] =
-    useState<AlumniEvent[]>([]);
+  const [events, setEvents] = useState<AlumniEvent[]>([]);
 
   // =======================================================
-  // GET ALUMNI EVENTS
+  // FETCH ALUMNI EVENTS
   // =======================================================
 
   useEffect(() => {
-    async function loadAlumniEvents() {
+    const fetchEvents = async () => {
       try {
-        const adminUrl =
-          process.env.NEXT_PUBLIC_ADMIN_URL;
+        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL;
 
         if (!adminUrl) {
           throw new Error(
@@ -99,41 +79,33 @@ export default function AlumniEvent() {
         }
 
         // =================================================
-        // NORMALIZE DATA
+        // NORMALIZE API DATA
         // =================================================
 
         const rawData =
-          result.data ??
-          result.alumniEvents ??
-          [];
+          result.data ?? result.alumniEvents ?? [];
 
-        const eventData = Array.isArray(
+        const eventList: AlumniEvent[] = Array.isArray(
           rawData
         )
           ? rawData
           : rawData
-            ? [rawData]
-            : [];
+          ? [rawData]
+          : [];
 
         // =================================================
-        // PUBLISHED + ORDER
+        // FILTER + SORT
         // =================================================
 
-        const publishedEvents =
-          eventData
-            .filter(
-              (event) =>
-                event.isPublished
-            )
-            .sort(
-              (a, b) =>
-                Number(a.order ?? 0) -
-                Number(b.order ?? 0)
-            );
+        const publishedEvents = eventList
+          .filter((event) => event.isPublished)
+          .sort(
+            (a, b) =>
+              Number(a.order ?? 0) -
+              Number(b.order ?? 0)
+          );
 
-        setEvents(
-          publishedEvents
-        );
+        setEvents(publishedEvents);
       } catch (error) {
         console.error(
           "CLIENT ALUMNI EVENT ERROR:",
@@ -142,28 +114,26 @@ export default function AlumniEvent() {
 
         setEvents([]);
       }
-    }
+    };
 
-    loadAlumniEvents();
+    fetchEvents();
   }, []);
 
   // =======================================================
-  // NO DATA
+  // HIDE SECTION WHEN NO EVENTS EXIST
   // =======================================================
 
-  if (events.length === 0) {
+  if (!events.length) {
     return null;
   }
 
   // =======================================================
-  // FEATURED IMAGE
+  // FEATURED EVENT IMAGE
   // =======================================================
 
   const featuredEvent =
-    events.find(
-      (event) =>
-        event.image?.trim()
-    ) ?? events[0];
+    events.find((event) => event.image?.trim()) ??
+    events[0];
 
   // =======================================================
   // RENDER
@@ -267,163 +237,155 @@ export default function AlumniEvent() {
             lg:gap-6
           "
         >
-          {events.map(
-            (event, index) => (
-              <article
-                key={event._id}
+          {events.map((event, index) => (
+            <article
+              key={event._id}
+              className="
+                flex
+                min-h-[170px]
+                items-center
+                gap-5
+                bg-white
+                px-5
+                py-7
+                sm:min-h-[185px]
+                sm:px-7
+                sm:py-8
+                lg:min-h-[200px]
+                lg:px-8
+                lg:py-9
+                xl:min-h-[205px]
+                xl:px-9
+              "
+            >
+              {/* EVENT NUMBER */}
+
+              <div
                 className="
-                  flex
-                  min-h-[170px]
-                  items-center
-                  gap-5
-                  bg-white
-                  px-5
-                  py-7
-                  sm:min-h-[185px]
-                  sm:px-7
-                  sm:py-8
-                  lg:min-h-[200px]
-                  lg:px-8
-                  lg:py-9
-                  xl:min-h-[205px]
-                  xl:px-9
+                  shrink-0
+                  font-sans
+                  text-[58px]
+                  font-light
+                  leading-none
+                  tracking-tight
+                  text-transparent
+                  [-webkit-text-stroke:1px_#008B45]
+                  sm:text-[70px]
+                  lg:text-[82px]
+                  xl:text-[88px]
                 "
               >
-                {/* =================================================
-                    NUMBER
-                ================================================= */}
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              {/* EVENT DETAILS */}
+
+              <div
+                className="
+                  min-w-0
+                  flex-1
+                "
+              >
+                {/* EVENT TITLE */}
+
+                <h3
+                  className="
+                    max-w-[650px]
+                    text-lg
+                    font-normal
+                    leading-7
+                    text-[#008B45]
+                    sm:text-xl
+                    sm:leading-8
+                    lg:text-[23px]
+                    lg:leading-9
+                    xl:text-[25px]
+                  "
+                >
+                  {event.title}
+                </h3>
+
+                {/* EVENT META */}
 
                 <div
                   className="
-                    shrink-0
-                    font-sans
-                    text-[58px]
-                    font-light
-                    leading-none
-                    tracking-tight
-                    text-transparent
-                    [-webkit-text-stroke:1px_#008B45]
-                    sm:text-[70px]
-                    lg:text-[82px]
-                    xl:text-[88px]
+                    mt-5
+                    flex
+                    flex-wrap
+                    items-center
+                    gap-x-5
+                    gap-y-3
+                    text-xs
+                    text-slate-600
+                    sm:text-sm
+                    lg:mt-6
+                    lg:text-[15px]
                   "
                 >
-                  {String(
-                    index + 1
-                  ).padStart(2, "0")}
-                </div>
+                  {/* DATE */}
 
-                {/* =================================================
-                    EVENT INFORMATION
-                ================================================= */}
-
-                <div
-                  className="
-                    min-w-0
-                    flex-1
-                  "
-                >
-                  {/* TITLE */}
-
-                  <h3
+                  <span
                     className="
-                      max-w-[650px]
-                      text-lg
-                      font-normal
-                      leading-7
-                      text-[#008B45]
-                      sm:text-xl
-                      sm:leading-8
-                      lg:text-[23px]
-                      lg:leading-9
-                      xl:text-[25px]
-                    "
-                  >
-                    {event.title}
-                  </h3>
-
-                  {/* META */}
-
-                  <div
-                    className="
-                      mt-5
-                      flex
-                      flex-wrap
+                      inline-flex
                       items-center
-                      gap-x-5
-                      gap-y-3
-                      text-xs
-                      text-slate-600
-                      sm:text-sm
-                      lg:mt-6
-                      lg:text-[15px]
+                      gap-2
+                      whitespace-nowrap
                     "
                   >
-                    {/* DATE */}
+                    <CalendarDays
+                      size={17}
+                      strokeWidth={1.6}
+                    />
 
-                    <span
-                      className="
-                        inline-flex
-                        items-center
-                        gap-2
-                        whitespace-nowrap
-                      "
-                    >
-                      <CalendarDays
-                        size={17}
-                        strokeWidth={1.6}
-                      />
+                    {event.date}
+                  </span>
 
-                      {event.date}
-                    </span>
+                  {/* TIME */}
 
-                    {/* TIME */}
+                  <span
+                    className="
+                      inline-flex
+                      items-center
+                      gap-2
+                      whitespace-nowrap
+                    "
+                  >
+                    <Clock3
+                      size={17}
+                      strokeWidth={1.6}
+                    />
 
-                    <span
-                      className="
-                        inline-flex
-                        items-center
-                        gap-2
-                        whitespace-nowrap
-                      "
-                    >
-                      <Clock3
-                        size={17}
-                        strokeWidth={1.6}
-                      />
+                    {event.time}
+                  </span>
 
-                      {event.time}
-                    </span>
+                  {/* LOCATION */}
 
-                    {/* LOCATION */}
+                  <span
+                    className="
+                      inline-flex
+                      items-center
+                      gap-2
+                      border-b
+                      border-dotted
+                      border-slate-500
+                      pb-0.5
+                    "
+                  >
+                    <MapPin
+                      size={17}
+                      strokeWidth={1.6}
+                    />
 
-                    <span
-                      className="
-                        inline-flex
-                        items-center
-                        gap-2
-                        border-b
-                        border-dotted
-                        border-slate-500
-                        pb-0.5
-                      "
-                    >
-                      <MapPin
-                        size={17}
-                        strokeWidth={1.6}
-                      />
-
-                      {event.location}
-                    </span>
-                  </div>
+                    {event.location}
+                  </span>
                 </div>
-              </article>
-            )
-          )}
+              </div>
+            </article>
+          ))}
         </div>
 
         {/* =================================================
-            RIGHT — SINGLE LARGE IMAGE
+            RIGHT — FEATURED IMAGE
         ================================================= */}
 
         <div
@@ -438,24 +400,18 @@ export default function AlumniEvent() {
             2xl:min-h-[700px]
           "
         >
-          {featuredEvent?.image ? (
+          {featuredEvent?.image && (
             <Image
-              src={
-                featuredEvent.image
-              }
-              alt={
-                featuredEvent.title
-              }
+              src={featuredEvent.image}
+              alt={featuredEvent.title}
               fill
               sizes="
                 (max-width: 1024px) 100vw,
                 45vw
               "
-              className="
-                object-cover
-              "
+              className="object-cover"
             />
-          ) : null}
+          )}
         </div>
       </div>
     </section>
